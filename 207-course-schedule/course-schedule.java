@@ -3,19 +3,14 @@ class Solution {
         boolean[] visited = new boolean[numCourses];
         boolean[] pathvisited = new boolean[numCourses];
 
-        ArrayList<Integer>[] adj = new ArrayList[numCourses];
+        List<List<Integer>> adj = new ArrayList<>();
 
         for(int i = 0; i < numCourses; i++){
-            adj[i] = new ArrayList<>();
+            adj.add(new ArrayList<>());
         }
 
-        // Build graph
-        for(int[] pair : prerequisites){
-            int course = pair[0];
-            int prerequisite = pair[1];
-
-            adj[prerequisite].add(course);
-        }
+        for (int[] pre : prerequisites)
+            adj.get(pre[1]).add(pre[0]);
         for(int i = 0 ; i < numCourses;i++){
             if(!visited[i]){
                 if(dfs(i,adj,visited,pathvisited)){
@@ -26,10 +21,10 @@ class Solution {
         return true;
 
     }
-    boolean dfs(int node,ArrayList<Integer>[] adj,boolean[] visited,boolean[] pathvisited){
+    boolean dfs(int node,List<List<Integer>> adj,boolean[] visited,boolean[] pathvisited){
         visited[node]  = true;
         pathvisited[node] = true;
-        for(int neighbour : adj[node]){
+        for(int neighbour : adj.get(node)){
             if(!visited[neighbour]){
                 if(dfs(neighbour,adj,visited,pathvisited)){
                     return true;
